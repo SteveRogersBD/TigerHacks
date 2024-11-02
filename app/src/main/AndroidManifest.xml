@@ -27,6 +27,20 @@
             android:exported="true">
 
         </activity>
+
+        <activity
+            android:name=".loginPage"
+            android:exported="true">
+        </activity>
+
+        <activity
+            android:name=".ForgotPassword"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".registerpage"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>
