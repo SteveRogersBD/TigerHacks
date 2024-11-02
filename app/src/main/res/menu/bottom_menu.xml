@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/baseline_home_24"
+        app:showAsAction="always"
+        android:title="" />
+    <item
+        android:id="@+id/disease"
+        android:title="Analyze"
+        android:icon="@drawable/plant"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/search"
+        android:title="Search"
+        android:icon="@drawable/search"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/map"
+        android:title="Locate"
+        android:icon="@drawable/location"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/social_media"
+        android:title="Connect"
+        android:icon="@drawable/globe"
+        app:showAsAction="always"/>
+
+</menu>
