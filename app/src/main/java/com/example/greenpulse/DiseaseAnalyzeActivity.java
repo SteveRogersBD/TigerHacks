@@ -238,7 +238,9 @@ public class DiseaseAnalyzeActivity extends AppCompatActivity {
                 " currently at " + diseasedCrop.growthStage + " which I am growing in " +
                 diseasedCrop.getLocation() + " where the weather is " + diseasedCrop.getWeather() +
                 ". "+ "Whose "+diseasedCrop.getAffectedArea()+"got affected recently, as you can see in the picture. "
-                +"Can you analyze and tell me the name of the disease based on the information given?";
+                +"Can you analyze and tell me the name of the disease based on the information given?" +
+                "No need extra information. Just give me what you think is the best answer even if you" +
+                "are not entirely sure.";
         return prompt;
     }
 

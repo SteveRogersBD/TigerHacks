@@ -53,7 +53,7 @@ public class GeminiActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String disease = intent.getStringExtra("disease");
         String name = intent.getStringExtra("crop");
-
+        binding.diseaseName.setText("Analyzed Disease: "+disease);
         callGemini(createPrompt(disease, name, REASON), REASON);
         callGemini(createPrompt(disease, name, SOLUTION), SOLUTION);
 
