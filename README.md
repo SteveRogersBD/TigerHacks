@@ -52,3 +52,7 @@ Gemini
 | Example Color  | #f8f8f8   |
 | Example Color  | #00b48a   |
 | Example Color  | #00d1a0   |
+
+## Website
+The github for the website can be found at: https://github.com/Enyetullah/greenPulse
+Website link: www.greenpulse.us
