@@ -48,12 +48,13 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder>{
             Toast.makeText(context, video.thumbnail.statics, Toast.LENGTH_SHORT).show();
             Picasso.get()
                     .load(video.thumbnail.statics)
+                    .error(R.drawable.farming)
                     .into(holder.thumbNailPoster);
         } else {
-            Toast.makeText(context, "Thumbnail URL is not available", Toast.LENGTH_SHORT).show();
             Picasso.get()
                     .load(video.thumbnail.statics)
                     .placeholder(R.drawable.farming)
+                    .error(R.drawable.farming)
                     .into(holder.thumbNailPoster);
         }
         Picasso.get()

@@ -19,7 +19,7 @@ public class StartingActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(StartingActivity.this,MainActivity.class));
+                startActivity(new Intent(StartingActivity.this, registerpage.class));
             }
         });
     }

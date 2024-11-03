@@ -5,11 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".BotActivity">
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:id="@+id/toolbar_bot"
+        android:background="@color/green"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="660dp"
-        android:id="@+id/main_recycler"/>
+        android:id="@+id/main_recycler"
+        android:layout_below="@+id/toolbar_bot"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"

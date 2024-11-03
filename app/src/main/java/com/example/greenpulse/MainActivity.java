@@ -229,13 +229,14 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else if(id==R.id.search){
-                    goTo(DiseaseAnalyzeActivity.class);
+                    //goTo(DiseaseAnalyzeActivity.class);
                 }
                 else if(id==R.id.map){
-                    goTo(SearchActivity.class);
+                    goTo(MapActivity.class);
                 }
                 else if(id==R.id.social_media){
                     //do nothing for now
+                    goTo(BotActivity.class);
                 }
                 return false;
             }
