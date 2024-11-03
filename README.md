@@ -1,3 +1,4 @@
+![image-alt](https://github.com/SteveRogersBD/TigerHacks/blob/7b4fcb53b935dd075853ccd678d8617796cba144/WhatsApp%20Image%202024-11-01%20at%2022.53.45(1).jpeg)
 # 🌱 Green Pulse – Plant Disease Detection Add-On for Adobe Express
 
 **Green Pulse**  leverages **Gemini AI** to identify plant diseases from uploaded images, provide detailed analysis, and suggest solutions to maintain plant health. This tool aims to support gardeners, farmers, and plant enthusiasts by offering accessible, technology-driven plant care.
