@@ -12,6 +12,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.greenpulse.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+
 // Class declaration for the registration page
 public class registerpage extends AppCompatActivity {
 
@@ -20,6 +28,8 @@ public class registerpage extends AppCompatActivity {
     Button btn;
     ProgressBar progressBar;
     Button btnback;
+    FirebaseAuth mAuth;
+    FirebaseDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +40,7 @@ public class registerpage extends AppCompatActivity {
         btn = findViewById(R.id.registerbtn); // Initialize registration button
         progressBar = findViewById(R.id.progressbar); // Initialize progress bar
         btnback = findViewById(R.id.backbtn);
-
+        mAuth = FirebaseAuth.getInstance();
         // Set click listener for the registration button
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,17 +49,9 @@ public class registerpage extends AppCompatActivity {
                 String email, password;
                 email = String.valueOf(editTextEmail.getText()); // Get entered email
                 password = String.valueOf(editTextPassword.getText()); // Get entered password
+                db= FirebaseDatabase.getInstance();
+                createUser(email,password);
 
-                // Validate email and password fields
-                if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(registerpage.this, "Enter email", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (TextUtils.isEmpty(password)) {
-                    Toast.makeText(registerpage.this, "Enter password", Toast.LENGTH_SHORT).show();
-                    return;
-                }
             }
         });
 
@@ -64,5 +66,28 @@ public class registerpage extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void createUser(String email, String password) {
+        mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                progressBar.setVisibility(View.GONE);
+                if(task.isSuccessful())
+                {
+                    User user = new User(email,password,null,null);
+                    String sEmail = email.replace('.','_');
+                    db.getReference().child("users").child(sEmail).setValue(user);
+                    startActivity(new Intent(registerpage.this,MapActivity.class));
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(registerpage.this, e.getLocalizedMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

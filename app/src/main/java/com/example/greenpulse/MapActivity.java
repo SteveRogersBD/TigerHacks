@@ -2,6 +2,7 @@ package com.example.greenpulse;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -9,14 +10,22 @@ import androidx.core.content.ContextCompat;
 import android.app.Dialog;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.greenpulse.databinding.ActivityMapBinding;
+import com.example.greenpulse.models.Field;
+import com.example.greenpulse.models.Task;
+import com.example.greenpulse.models.User;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,6 +37,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,15 +59,24 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     Dialog dialog;
     ActivityMapBinding binding;
+    FirebaseAuth mAuth;
+    FirebaseDatabase db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMapBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        //initialize
+
+        db=FirebaseDatabase.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+
+        //retrieveFieldData();
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -81,10 +105,95 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void setTheDialog() {
+        // Initialize the dialog with the current activity context
         dialog = new Dialog(MapActivity.this);
+
+        // Set the dialog's content view (replace `R.layout.dialog_layout` with your custom layout)
+        dialog.setContentView(R.layout.field_prompt_layout);
+
+        // Set width and height
+        Window window = dialog.getWindow();
+        if (window != null) {
+            // Set the dialog width and height (MATCH_PARENT makes it fullscreen horizontally)
+            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+            // Set optional animations for showing and dismissing the dialog
+            window.setWindowAnimations(android.R.style.Animation_Dialog);
+        }
+
+        // Optional: Set the dialog to be cancelable or non-cancelable
+        dialog.setCancelable(true);
+
+        // Show the dialog
         dialog.show();
 
+        Field field = new Field();
+
+        EditText soilET = dialog.findViewById(R.id.field_soil_TV);
+        EditText weatherET = dialog.findViewById(R.id.field_weather_TV);
+        EditText descET = dialog.findViewById(R.id.field_des_ET);
+        AppCompatButton button = dialog.findViewById(R.id.dialog_done);
+        EditText addTV = dialog.findViewById(R.id.location_dialog);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                // Calculate the center point of the polygon
+                LatLng centerPoint = calculateCenterPoint(polygonPoints);
+
+                // Use Geocoder to get the address from the center point
+                String address = getAddressFromLatLng(centerPoint);
+
+                field.setSoil(soilET.getText().toString());
+                field.setWeather(weatherET.getText().toString());
+                field.setAddress(address);
+                field.setSoil(soilET.getText().toString());
+                field.setPolygon(polygon.getPoints());
+                field.setDescription(descET.getText().toString());
+
+                String childPath = mAuth.getCurrentUser().getEmail().replace('.','_');
+                String fieldPath = address.replace(',','_');
+                db.getReference().child("users").child(childPath).child("fields")
+                        .child(fieldPath)
+                        .setValue(field);
+            }
+        });
+
+
     }
+    private LatLng calculateCenterPoint(List<LatLng> points) {
+        if (points.isEmpty()) return null;
+
+        double latSum = 0;
+        double lngSum = 0;
+
+        for (LatLng point : points) {
+            latSum += point.latitude;
+            lngSum += point.longitude;
+        }
+
+        int totalPoints = points.size();
+        return new LatLng(latSum / totalPoints, lngSum / totalPoints);
+    }
+
+    private String getAddressFromLatLng(LatLng latLng) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        List<Address> addressList;
+        String address = "Address not found"; // Default value
+
+        try {
+            addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            if (addressList != null && !addressList.isEmpty()) {
+                address = addressList.get(0).getAddressLine(0);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e("GetAddress", "Geocoder service not available");
+        }
+
+        return address;
+    }
+
 
     private void clearPolygons() {
         // Remove the polygon if it exists
@@ -113,6 +222,32 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         // Add the polygon to the map
         polygon = mMap.addPolygon(polygonOptions);
     }
+    private void retrieveFieldData() {
+        String childPath = mAuth.getCurrentUser().getEmail().replace('.','_');
+        DatabaseReference newFieldRef = db.getReference().child("users").child(childPath).
+                child("fields").child("1650 Amphitheatre Pkwy_ Mountain View_ CA 94043_ USA");
+        newFieldRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Field field = dataSnapshot.getValue(Field.class); // Assuming Field is your model class
+
+                    // Do something with the retrieved field data
+                    if (field != null) {
+                        drawRetrievedPolygon(field.getPolygon());
+                    }
+                } else {
+                    Log.d("FieldData", "No such field exists");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("FieldData", "Database error: " + databaseError.getMessage());
+            }
+        });
+    }
+
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
@@ -216,5 +351,21 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             Log.e("SearchLocation", "Geocoder service not available");
         }
     }
+
+    private void drawRetrievedPolygon(List<LatLng> points) {
+        if (points != null && !points.isEmpty()) {
+            PolygonOptions polygonOptions = new PolygonOptions()
+                    .addAll(points)
+                    .strokeColor(Color.RED) // Set polygon stroke color
+                    .fillColor(0x220FF000) // Set polygon fill color
+                    .strokeWidth(5); // Set stroke width
+
+            // Add polygon to the map
+            mMap.addPolygon(polygonOptions);
+        }
+    }
+
+
+
 
 }

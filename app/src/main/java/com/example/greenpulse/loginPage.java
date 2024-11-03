@@ -16,6 +16,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.HashMap;
 
 // MainActivity class declaration
@@ -25,6 +31,7 @@ public class loginPage extends AppCompatActivity {
     Button butn;
     ProgressBar progressBar;
     TextView textview;
+    FirebaseAuth mAuth;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -46,18 +53,28 @@ public class loginPage extends AppCompatActivity {
                 String email, password;
                 email =String.valueOf(editTextEmail.getText());
                 password =String.valueOf(editTextPassword.getText());
+                mAuth = FirebaseAuth.getInstance();
+                verifyUser(email,password);
 
-                if (TextUtils.isEmpty(email))
-                {
-                    Toast.makeText(loginPage.this, "Enter email",Toast.LENGTH_SHORT).show();
-                    return;
-                }
+            }
+        });
 
-                if (TextUtils.isEmpty(password))
-                {
-                    Toast.makeText(loginPage.this, "Enter password",Toast.LENGTH_SHORT).show();
-                    return;
-                }
+    }
+
+    private void verifyUser(String email, String password) {
+        mAuth.signInWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+
+            @Override
+            public void onSuccess(AuthResult authResult) {
+                progressBar.setVisibility(View.GONE);
+                startActivity(new Intent(loginPage.this,MapActivity.class));
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(loginPage.this, e.getLocalizedMessage(),
+                        Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -76,4 +93,12 @@ public class loginPage extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(mAuth.getCurrentUser()!=null)
+        {
+            startActivity(new Intent(loginPage.this,MapActivity.class));
+        }
+    }
 }

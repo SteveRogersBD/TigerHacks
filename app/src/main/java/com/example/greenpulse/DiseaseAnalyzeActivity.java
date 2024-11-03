@@ -71,8 +71,6 @@ public class DiseaseAnalyzeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 binding.promptBtn.setVisibility(View.INVISIBLE);
                 setTheDialog();
-                diseasedCrop.setWeather("60 degree F, pretty cold");
-                diseasedCrop.setLocation("Columbia,MO 63501");
             }
         });
 

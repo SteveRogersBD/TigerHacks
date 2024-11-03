@@ -24,8 +24,8 @@
         app:showAsAction="always"/>
     <item
         android:id="@+id/social_media"
-        android:title="Connect"
-        android:icon="@drawable/globe"
+        android:title="AgriBot"
+        android:icon="@drawable/chatbot"
         app:showAsAction="always"/>
 
 </menu>
