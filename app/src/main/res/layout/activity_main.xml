@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#151313"
     tools:context=".MainActivity">
 
@@ -24,7 +23,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
@@ -42,28 +42,142 @@
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:padding="3dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:gravity="center"
                 android:background="@color/green" />
 
-            <!-- RecyclerView for Weather Widget -->
+            <!-- New Weather Card -->
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/weatherRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="201dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/green"
-                android:text="Trending Articles"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:padding="3dp"
-                />
+            <!-- Additional Content Sections -->
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="325dp"
+                android:layout_height="177dp"
+                android:layout_margin="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/weathercover">
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout"
+                        android:layout_width="189dp"
+                        android:layout_height="90dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp">
+
+                        <!-- Temperature and Weather Info -->
+                        <LinearLayout
+                            android:layout_width="81dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="68dp"
+                                android:layout_height="wrap_content"
+                                android:text="18°C"
+                                android:textColor="@color/red"
+                                android:textSize="24sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="74dp"
+                                android:layout_height="44dp"
+                                android:text="Cloudy"
+                                android:textColor="@color/red"
+                                android:textSize="16sp"
+                                android:textStyle="bold"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="313dp"
+                        android:layout_height="88dp"
+                        android:layout_alignEnd="@+id/linearLayout"
+                        android:layout_alignBottom="@+id/linearLayout"
+                        android:layout_marginEnd="-125dp"
+                        android:layout_marginBottom="-87dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="82dp"
+                                android:layout_height="wrap_content"
+                                android:text="Humidity"
+                                android:textColor="@color/white"
+                                android:layout_margin="10dp"
+                                android:textSize="18sp" />
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="44dp"
+                                android:text="Good"
+                                android:layout_marginLeft="5dp"
+                                android:background="@color/green"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:layout_marginLeft="5dp">
+
+                            <TextView
+                                android:layout_width="82dp"
+                                android:layout_height="wrap_content"
+                                android:text="Rain"
+                                android:textColor="@color/white"
+                                android:layout_margin="10dp"
+                                android:textSize="18sp"
+                                android:textAlignment="center"/>
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/button1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="44dp"
+                                android:text="Good"
+                                android:layout_marginLeft="5dp"
+                                android:background="@color/green"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:layout_marginLeft="5dp">
+
+                            <TextView
+                                android:layout_width="82dp"
+                                android:layout_height="wrap_content"
+                                android:text="Moisture"
+                                android:textColor="@color/white"
+                                android:layout_margin="10dp"
+                                android:textSize="18sp" />
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/button2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="44dp"
+                                android:text="Good"
+                                android:layout_marginLeft="5dp"
+                                android:background="@color/green"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/news"
@@ -101,5 +215,4 @@
         android:id="@+id/bottom_bar"
         app:itemIconTint="@color/white"
         app:itemIconSize="30dp" />
-
 </RelativeLayout>

@@ -194,10 +194,6 @@ public class MainActivity extends AppCompatActivity {
                         {
                             weatherList = response.body().data;
                             tempAdapter = new TempAdapter(MainActivity.this,weatherList);
-                            binding.weatherRecyclerView.setAdapter(tempAdapter);
-                            binding.weatherRecyclerView.setLayoutManager(new LinearLayoutManager(
-                                    MainActivity.this,LinearLayoutManager.HORIZONTAL,false)
-                            );
                         }
                     }
 
