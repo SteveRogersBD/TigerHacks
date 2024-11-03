@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#151313"
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -29,7 +30,8 @@
                 android:id="@+id/profile_image"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
-                android:src="@drawable/user"
+                android:src="@drawable/cap"
+                android:tint="@color/white"
                 android:layout_gravity="center_horizontal" />
 
             <TextView
@@ -37,32 +39,53 @@
                 android:layout_height="wrap_content"
                 android:text="Happy Farming"
                 android:textSize="20sp"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textStyle="bold"
                 android:padding="3dp"
                 android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp" />
+                android:layout_marginRight="5dp"
+                android:background="@color/green" />
 
             <!-- RecyclerView for Weather Widget -->
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/weather_recycler_view"
+                android:id="@+id/weatherRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="201dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/tweet"
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="93dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp" />
+                android:layout_height="wrap_content"
+                android:background="@color/green"
+                android:text="Trending Articles"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:padding="3dp"
+                />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/news"
                 android:layout_width="match_parent"
-                android:layout_height="95dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/green"
+                android:text="Trending Youtube Videos"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:padding="3dp"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/videos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp" />
 
@@ -75,6 +98,7 @@
         android:layout_alignParentBottom="true"
         android:background="@color/green"
         app:menu="@menu/bottom_menu"
+        android:id="@+id/bottom_bar"
         app:itemIconTint="@color/white"
         app:itemIconSize="30dp" />
 

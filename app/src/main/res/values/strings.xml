@@ -5,6 +5,15 @@
     <string name="map">Mapping Your Way to Healthier Harvests</string>
     <string name="bot">AgriHelp: Your AI Farming Expert</string>
     <string name="social">AgriConnect: Share, React, and Connect with Farmers Worldwide</string>
+    <string name="weather_key">8324a58765aecc61e8926a254c0d5589</string>
+    <string name="my_api_key">AIzaSyAHSSVoT_SOJTv9O2Gl08t-KeUiw4o4nV4</string>
+    <string name="video_api_key">44bc32b6b0985dc556a3fe102c6ca70692775c35e54c323bf091eba546513863</string>
+    <string name="news_api_key">74f40f25e726ede7d9236f7b7799d8e5</string>
+    <string name="title_activity_disease">DiseaseActivity</string>
+
+    <string name="apiKey">AIzaSyD-mWV8ipg5hbKHOCN1-EtHbA5qiWdBfH4</string>
+
+
 
 
 </resources>

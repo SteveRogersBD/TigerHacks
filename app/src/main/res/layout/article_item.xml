@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="10dp"
+    android:background="@color/green"
+    app:cardElevation="40dp"
+    app:cardCornerRadius="8dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@color/green"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:src="@drawable/farming"
+            android:scaleType="centerCrop"
+            android:id="@+id/article_poster"
+
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Happy Farming!!!"
+            android:padding="3dp"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:id="@+id/article_heading"
+            />
+
+    </LinearLayout>
+
+
+
+</androidx.cardview.widget.CardView>
