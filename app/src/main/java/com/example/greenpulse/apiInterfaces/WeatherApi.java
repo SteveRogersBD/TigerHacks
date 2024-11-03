@@ -7,11 +7,10 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface WeatherApi {
-    @GET("current")
-    Call<WeatherResponse> getDailyWeather(
-            @Query("lat") double latitude,
-            @Query("lon") double longitude,
+    @GET("forecast.json")
+    Call<WeatherResponse> getWeatherForecast(
             @Query("key") String apiKey,
-            @Query("include") String include
+            @Query("q") String location,
+            @Query("days") int days
     );
 }

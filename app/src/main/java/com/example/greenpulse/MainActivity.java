@@ -1,11 +1,9 @@
 package com.example.greenpulse;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -15,8 +13,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.greenpulse.adapters.TempAdapter;
 import com.example.greenpulse.adapters.VideoAdapter;
+import com.example.greenpulse.adapters.WeatherAdapter;
 import com.example.greenpulse.apiInterfaces.NewsApi;
 import com.example.greenpulse.apiInterfaces.VideoApi;
 import com.example.greenpulse.apiInterfaces.WeatherApi;
@@ -40,15 +38,17 @@ public class MainActivity extends AppCompatActivity {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
     NewsAdapter newsAdapter;
     VideoAdapter videoAdapter;
-    TempAdapter tempAdapter;
     Location location;
     ActivityMainBinding binding;
     WeatherApi weatherApi;
     VideoApi videoApi;
     NewsApi newsApi;
-    List<WeatherResponse.Datum>weatherList;
+    WeatherAdapter weatherAdapter;
     List<YoutubeVideo.VideoResult>videoList;
     List<GNewsResponse.Article>articleList;
+    List<WeatherResponse.Forecastday>forecastdays;
+    String address = "";
+    String temp = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         checkLocationPermission();
         videoApi = RetrofitInstance.seraFit.create(VideoApi.class);
         newsApi = RetrofitInstance.newsFit.create(NewsApi.class);
-        
+        weatherApi = RetrofitInstance.weatherFit.create(WeatherApi.class);
         dealWithVideo();
         dealWithNews();
         handleBttomMenu();
@@ -66,6 +66,35 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+
+    private void dealWithWeather(String location) {
+        weatherApi.getWeatherForecast(getString(R.string.weather_key),location,10).enqueue(new Callback<WeatherResponse>() {
+            @Override
+            public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
+                if(response.isSuccessful() && response.body()!=null)
+                {
+
+                    forecastdays = response.body().forecast.forecastday;
+                    String t = response.body().location.name;
+                    address = address.concat(t+", "+response.body().location.name);
+                    temp = temp.concat(response.body().forecast.forecastday.get(0).day.avgtemp_c+"");
+                    weatherAdapter = new WeatherAdapter(MainActivity.this,forecastdays);
+                    binding.weatherRecyclerView.setAdapter(weatherAdapter);
+                    binding.weatherRecyclerView.setLayoutManager(new LinearLayoutManager(
+                            MainActivity.this,LinearLayoutManager.HORIZONTAL,false
+                    ));
+                }
+                else{
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WeatherResponse> call, Throwable throwable) {
+
+            }
+        });
     }
 
     private void dealWithNews() {
@@ -172,9 +201,9 @@ public class MainActivity extends AppCompatActivity {
                 .addOnSuccessListener(this, location -> {
                     if (location != null) {
                         this.location = location;
-                        dealWithWeather();
-                        //Toast.makeText(this, location.toString(),
-                                //Toast.LENGTH_SHORT).show();
+                        String add = location.getLatitude()+","+location.getLongitude();
+                        dealWithWeather(add);
+
 
                     } else {
                         Toast.makeText(this, "Location not found!!!",
@@ -183,30 +212,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void dealWithWeather() {
-        weatherApi = RetrofitInstance.weatherFit.create(WeatherApi.class);
-        weatherApi.getDailyWeather(location.getLatitude(),location.getLongitude(),
-                        getString(R.string.weather_key),"daily")
-                .enqueue(new Callback<WeatherResponse>() {
-                    @Override
-                    public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
-                        if(response.isSuccessful() && response!=null)
-                        {
-                            weatherList = response.body().data;
-                            tempAdapter = new TempAdapter(MainActivity.this,weatherList);
-                            binding.weatherRecyclerView.setAdapter(tempAdapter);
-                            binding.weatherRecyclerView.setLayoutManager(new LinearLayoutManager(
-                                    MainActivity.this,LinearLayoutManager.HORIZONTAL,false)
-                            );
-                        }
-                    }
 
-                    @Override
-                    public void onFailure(Call<WeatherResponse> call, Throwable throwable) {
-
-                    }
-                });
-    }
 
     public void handleBttomMenu(){
         binding.bottomBar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -217,7 +223,10 @@ public class MainActivity extends AppCompatActivity {
                     //do nothing stay there
                 }
                 else if(id==R.id.disease){
-                    goTo(DiseaseAnalyzeActivity.class);
+                    Intent intent = new Intent(MainActivity.this,DiseaseAnalyzeActivity.class);
+                    intent.putExtra("address",address);
+                    intent.putExtra("tempC",temp);
+                    startActivity(intent);
                 }
                 else if(id==R.id.search){
                     goTo(DiseaseAnalyzeActivity.class);

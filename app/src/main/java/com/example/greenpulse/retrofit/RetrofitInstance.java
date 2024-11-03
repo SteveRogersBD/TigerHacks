@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitInstance {
     public static Retrofit weatherFit = new Retrofit.Builder().
-            baseUrl("https://api.weatherbit.io/v2.0/").addConverterFactory(GsonConverterFactory.create()).
+            baseUrl("http://api.weatherapi.com/v1/").addConverterFactory(GsonConverterFactory.create()).
             build();
 
     public static Retrofit seraFit = new Retrofit.Builder().

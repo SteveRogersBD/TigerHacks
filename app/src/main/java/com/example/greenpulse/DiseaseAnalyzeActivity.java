@@ -50,8 +50,14 @@ public class DiseaseAnalyzeActivity extends AppCompatActivity {
         binding = ActivityDiseaseAnalyzeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Remove the local declaration and initialize the instance variable instead
+
+        //get the location and temp
+        Intent intent = getIntent();
+        String address = intent.getStringExtra("address");
+        String temp = intent.getStringExtra("tempC");
         diseasedCrop = new DiseasedCrop();  // Initialize the instance variable
+        diseasedCrop.location = address;
+        diseasedCrop.weather = temp;
 
         binding.imagePicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -234,13 +240,16 @@ public class DiseaseAnalyzeActivity extends AppCompatActivity {
     }
 
     private String generatePrompt() {
-        String prompt = "This is a " + diseasedCrop.getName() + " of type " + diseasedCrop.getType() +
-                " currently at " + diseasedCrop.growthStage + " which I am growing in " +
-                diseasedCrop.getLocation() + " where the weather is " + diseasedCrop.getWeather() +
-                ". "+ "Whose "+diseasedCrop.getAffectedArea()+"got affected recently, as you can see in the picture. "
-                +"Can you analyze and tell me the name of the disease based on the information given?" +
-                "No need extra information. Just give me what you think is the best answer even if you" +
-                "are not entirely sure.";
+//        String prompt = "This is a " + diseasedCrop.getName() + " of type " + diseasedCrop.getType() +
+//                " currently at " + diseasedCrop.growthStage + " which I am growing in " +
+//                diseasedCrop.getLocation() + " where the average temp is " + diseasedCrop.getWeather() +
+//                "now-a-days. "+ "Whose "+diseasedCrop.getAffectedArea()+"got affected recently, as you can see in the picture. "
+//                +"Can you analyze and tell me the name of the disease based on the information given?" +
+//                "No need extra information. Just give me what you think is the best answer even if you" +
+//                "are not entirely sure.";
+        String prompt = "This is pic of one of my "+diseasedCrop.name+"s which is currently look like" +
+                "this. I think it is affected by a disease. Can you analyze it and let me know." +
+                "I just wanna know the name of the disease within 2/3 words. No more no less.";
         return prompt;
     }
 
