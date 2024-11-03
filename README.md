@@ -29,12 +29,21 @@
 - **Shahariaj Mohammad Sajid** – smsajid2910@gmail.com
 - **Enyetullah Rahimullah** – enayatrahimi780@yahoo.com
 - **Ashik Dey Rupak** – ashikdeyrupak03@gmail.com
+## Usage
+Upload a Plant Image: Use the Green Pulse add-on within Adobe Express to upload your plant image.
+
+Get Analysis: The image is analyzed by Gemini AI to detect any potential diseases.
+
+View Solutions: Review detailed treatment suggestions and access related articles for further information.
 
 ## Acknowledgements
-Developed for **TigerHacks 2024**, with gratitude to mentors, the community, and technology enthusiasts who inspire innovation.
-- [Awesome Readme Templates](https://github.com/matiassingers/awesome-readme)
-- [Awesome README](https://github.com/matiassingers/awesome-readme)
-- [How to write a Good README](https://www.makeareadme.com/)
+
+
+Developed for TigerHacks 2024 with special thanks to our mentors, the community, and various resources that inspired and guided the project:
+
+Chatgpt
+
+Gemini
 ## Color Reference
 
 | Color          | Hex       |
